@@ -356,10 +356,10 @@
         x.closePath();
       }
 
-      // Latar luar + kartu putih bersudut melengkung dengan bayangan lembut
-      x.fillStyle = '#eef2f9'; x.fillRect(0, 0, W + 2 * M, H + 2 * M);
+      // Latar luar putih + kartu putih bersudut melengkung dengan bayangan lembut
+      x.fillStyle = '#ffffff'; x.fillRect(0, 0, W + 2 * M, H + 2 * M);
       x.save();
-      x.shadowColor = 'rgba(14,31,61,0.14)'; x.shadowBlur = 24; x.shadowOffsetY = 6;
+      x.shadowColor = 'rgba(14,31,61,0.10)'; x.shadowBlur = 24; x.shadowOffsetY = 6;
       x.fillStyle = '#ffffff'; rr(M, M, W, H, rad); x.fill();
       x.restore();
 
@@ -400,7 +400,6 @@
       var startY = hY + headH;
       SIZES.forEach(function(t, r){
         var ry = startY + r * rowH, mid = ry + rowH/2 + 5;
-        if (t === anchorT){ x.fillStyle = '#e7f0ff'; x.fillRect(0, ry, W, rowH); }
         x.textAlign = 'center';
         cols.forEach(function(col, i){
           x.fillStyle = col.color(t);
