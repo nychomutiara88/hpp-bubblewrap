@@ -338,13 +338,35 @@
       var scale = 2, pad = 32;
       var W = Math.max(560, Math.min(900, 70 + cols.length * 165));
       var L = pad, R = W - pad;
-      var topH = 118, headH = 46, rowH = 42, footH = 0;
+      var topH = 118, headH = 46, rowH = 42, footH = 18;
       var H = topH + headH + SIZES.length * rowH + footH;
       var c = document.createElement('canvas');
-      c.width = W * scale; c.height = H * scale;
+      var M = 22, rad = 20;
+      c.width = (W + 2 * M) * scale; c.height = (H + 2 * M) * scale;
       var x = c.getContext('2d'); x.scale(scale, scale);
       x.textBaseline = 'alphabetic';
 
+      function rr(px, py, pw, ph, r){
+        x.beginPath();
+        x.moveTo(px + r, py);
+        x.arcTo(px + pw, py, px + pw, py + ph, r);
+        x.arcTo(px + pw, py + ph, px, py + ph, r);
+        x.arcTo(px, py + ph, px, py, r);
+        x.arcTo(px, py, px + pw, py, r);
+        x.closePath();
+      }
+
+      // Latar luar + kartu putih bersudut melengkung dengan bayangan lembut
+      x.fillStyle = '#eef2f9'; x.fillRect(0, 0, W + 2 * M, H + 2 * M);
+      x.save();
+      x.shadowColor = 'rgba(14,31,61,0.14)'; x.shadowBlur = 24; x.shadowOffsetY = 6;
+      x.fillStyle = '#ffffff'; rr(M, M, W, H, rad); x.fill();
+      x.restore();
+
+      // Semua isi dipotong mengikuti lengkung kartu
+      x.save();
+      x.translate(M, M);
+      rr(0, 0, W, H, rad); x.clip();
       x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, H);
 
       // Baris atas: nama/judul (kiri) + tanggal & jam WIB real-time (kanan)
@@ -388,6 +410,12 @@
         if (r < SIZES.length - 1){ x.fillStyle = '#e3e9f3'; x.fillRect(0, ry + rowH - 1, W, 1); }
       });
 
+
+      x.restore();
+      // Garis tepi kartu
+      x.save(); x.translate(M, M);
+      x.strokeStyle = '#d2dcec'; x.lineWidth = 1; rr(0.5, 0.5, W - 1, H - 1, rad); x.stroke();
+      x.restore();
 
       lastCanvas = c;
       cb(c.toDataURL('image/jpeg', 0.95));
