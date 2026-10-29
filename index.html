@@ -68,7 +68,6 @@
   thead th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--accent-strong);font-weight:800;
     text-align:center;padding:11px 16px;border-top:2px solid var(--accent);border-bottom:2px solid var(--accent);background:var(--accent-soft);white-space:nowrap}
   tbody td{padding:10px 16px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
-  tbody td:first-child{text-align:left}
   tbody tr:last-child td{border-bottom:0}
   tbody tr:hover{background:var(--surface-2)}
   tr.anchor-row{background:var(--accent-soft)!important}
@@ -141,11 +140,11 @@
         <div class="mini-input"><select id="anchorSize" class="sel-select" aria-label="Ukuran acuan"></select></div>
       </div>
       <div>
-        <small class="lbl">HPP (ukuran acuan)</small>
+        <small class="lbl">HPP</small>
         <div class="mini-input"><span class="rp">Rp</span><input id="hppAcuan" inputmode="numeric" autocomplete="off" placeholder="50.000" aria-label="HPP ukuran acuan"></div>
       </div>
       <div>
-        <small class="lbl">Harga jual (ukuran acuan)</small>
+        <small class="lbl">Harga jual</small>
         <div class="mini-input"><span class="rp">Rp</span><input id="anchorPrice" inputmode="numeric" autocomplete="off" placeholder="75.000" aria-label="Harga jual ukuran acuan"></div>
       </div>
       <div>
@@ -233,7 +232,7 @@
     SIZES.forEach(function(t){
       var label = (t/10).toFixed(1);
       html += '<tr data-t="'+t+'">'
-        + '<td class="uk">'+label+'<small>Kg</small><span class="tag" id="tag'+t+'" hidden>acuan</span></td>'
+        + '<td class="uk">'+label+'<small>Kg</small></td>'
         + '<td class="cell-mono cell-hpp" data-label="HPP" id="hpp'+t+'">Rp 0</td>'
         + '<td class="cell-mono cell-sel" data-label="Selisih" id="sel'+t+'">Rp 0</td>'
         + '<td class="cell-mono cell-hasil" data-label="Harga Jadi" id="jadi'+t+'">Rp 0</td>'
@@ -252,7 +251,6 @@
       var mEl = document.getElementById('mar'+t);
       mEl.textContent = fmtRp(mar);
       mEl.className = 'cell-margin ' + (mar >= 0 ? 'pos' : 'neg');
-      document.getElementById('tag'+t).hidden = (t !== anchorT);
       document.querySelector('tr[data-t="'+t+'"]').classList.toggle('anchor-row', t === anchorT);
     });
   }
