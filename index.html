@@ -197,7 +197,7 @@
           <button type="button" class="chip active" data-col="uk">Ukuran</button>
           <button type="button" class="chip active" data-col="hpp">HPP</button>
           <button type="button" class="chip active" data-col="sel">Selisih</button>
-          <button type="button" class="chip active" data-col="jadi">Harga Jadi</button>
+          <button type="button" class="chip active" data-col="jadi">Harga Jual</button>
           <button type="button" class="chip active" data-col="mar">Margin</button>
         </div>
       </div>
@@ -255,7 +255,7 @@
         + '<td class="uk">'+label+'<small>Kg</small></td>'
         + '<td class="cell-mono cell-hpp" data-label="HPP" id="hpp'+t+'">Rp 0</td>'
         + '<td class="cell-mono cell-sel" data-label="Selisih" id="sel'+t+'">Rp 0</td>'
-        + '<td class="cell-mono cell-hasil" data-label="Harga Jadi" id="jadi'+t+'">Rp 0</td>'
+        + '<td class="cell-mono cell-hasil" data-label="Harga Jual" id="jadi'+t+'">Rp 0</td>'
         + '<td class="cell-margin" data-label="Margin" id="mar'+t+'">Rp 0</td>'
         + '</tr>';
     });
@@ -318,7 +318,7 @@
     { key:'uk',   label:'UKURAN',     w:0.9,  font:'700 15px', val:function(t){ return (t/10).toFixed(1)+' Kg'; }, color:function(){ return '#0e1f3d'; } },
     { key:'hpp',  label:'HPP',        w:1.1,  font:'500 14px', val:function(t){ return fmtRp(hppOf(t)); },         color:function(){ return '#5c6b86'; } },
     { key:'sel',  label:'SELISIH',    w:1.05, font:'500 14px', val:function(t){ return fmtSigned(selisihOf(t)); }, color:function(){ return '#5c6b86'; } },
-    { key:'jadi', label:'HARGA JADI', w:1.2,  font:'700 15px', val:function(t){ return fmtRp(hargaJadiOf(t)); },   color:function(){ return '#0e1f3d'; } },
+    { key:'jadi', label:'HARGA JUAL', w:1.2,  font:'700 15px', val:function(t){ return fmtRp(hargaJadiOf(t)); },   color:function(){ return '#0e1f3d'; } },
     { key:'mar',  label:'MARGIN',     w:1.1,  font:'700 14px', val:function(t){ return fmtRp(marginOf(t)); },      color:function(t){ return marginOf(t)>=0 ? '#157a3c' : '#c1281f'; } }
   ];
 
@@ -338,7 +338,7 @@
       var scale = 2, pad = 32;
       var W = Math.max(560, Math.min(900, 70 + cols.length * 165));
       var L = pad, R = W - pad;
-      var topH = 118, headH = 46, rowH = 42, footH = 46;
+      var topH = 118, headH = 46, rowH = 42, footH = 0;
       var H = topH + headH + SIZES.length * rowH + footH;
       var c = document.createElement('canvas');
       c.width = W * scale; c.height = H * scale;
@@ -385,12 +385,9 @@
           x.font = col.font + ' "JetBrains Mono",monospace';
           x.fillText(col.val(t), cc(i), mid);
         });
-        x.fillStyle = '#e3e9f3'; x.fillRect(0, ry + rowH - 1, W, 1);
+        if (r < SIZES.length - 1){ x.fillStyle = '#e3e9f3'; x.fillRect(0, ry + rowH - 1, W, 1); }
       });
 
-      // Footer (hanya nama/brand)
-      x.textAlign = 'center'; x.fillStyle = '#5c6b86'; x.font = '500 12px "Plus Jakarta Sans",sans-serif';
-      x.fillText(brand, W/2, H - 18);
 
       lastCanvas = c;
       cb(c.toDataURL('image/jpeg', 0.95));
