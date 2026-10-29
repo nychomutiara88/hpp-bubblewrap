@@ -181,7 +181,6 @@
     <div class="cap">Klik <b>Download JPG</b> untuk simpan, atau tekan lama gambar (HP) untuk bagikan ke WhatsApp.</div>
     <div class="mrow">
       <button class="btn btn-primary" id="jpgDownload">Download JPG</button>
-      <button class="btn btn-ghost" id="jpgCopy">Salin gambar</button>
       <button class="btn btn-ghost" id="jpgClose">Tutup</button>
     </div>
   </div>
@@ -371,18 +370,6 @@
       setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1000);
       showToast('JPG didownload ✓');
     }, 'image/jpeg', 0.95);
-  });
-
-  document.getElementById('jpgCopy').addEventListener('click', function(){
-    if (lastCanvas && navigator.clipboard && window.ClipboardItem){
-      lastCanvas.toBlob(function(b){
-        try{
-          navigator.clipboard.write([new ClipboardItem({'image/png': b})])
-            .then(function(){ showToast('Gambar disalin ✓'); })
-            .catch(function(){ showToast('Tekan lama gambar untuk simpan'); });
-        }catch(e){ showToast('Tekan lama gambar untuk simpan'); }
-      }, 'image/png');
-    } else { showToast('Tekan lama gambar untuk simpan'); }
   });
 
   // ---- Toast ----
