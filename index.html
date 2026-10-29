@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biaya Import Jumbo Lakban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    --ink:#0b0c0e; --ink-soft:#3f454d; --muted:#8b9199;
+    --line:#e7e9ec; --line-strong:#cfd3d8; --paper:#ffffff; --paper-2:#fbfbfc;
+    --brand:#0b4da2; --brand-strong:#083a7d; --brand-bright:#1f6fe0;
+    --brand-soft:#eef4fd; --brand-soft-2:#f5f9ff; --brand-line:#cfe0fb; --brand-line-strong:#a9c8f5;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .s2{ /* Section 2 — teal/cyan */
+    --brand:#0e7490; --brand-strong:#155e75; --brand-bright:#0891b2;
+    --brand-soft:#ecfeff; --brand-soft-2:#f4feff; --brand-line:#bdeef7; --brand-line-strong:#7fdcec;
+  }
+  *,*::before,*::after{box-sizing:inherit;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;}
+  body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper-2);-webkit-font-smoothing:antialiased;line-height:1.45;}
+  .num{font-family:'JetBrains Mono','Inter',ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px;}
+
+  header.top{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:22px;}
+  .brand-tag{font-size:12px;letter-spacing:.14em;color:var(--brand);font-weight:700;margin:0 0 6px;}
+  h1{font-size:26px;line-height:1.15;font-weight:800;margin:0;letter-spacing:-.015em;}
+  .sub{margin:6px 0 0;color:var(--ink-soft);font-size:14px;max-width:54ch;}
+  .btn{appearance:none;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink);font:inherit;font-size:13px;font-weight:500;padding:9px 14px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:border-color .15s,background .15s,color .15s;}
+  .btn:hover{border-color:var(--brand);color:var(--brand);}
+  .btn:active{transform:translateY(1px);}
+  .btn svg{width:15px;height:15px;}
+
+  .kurs-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:12px;padding:12px 16px;margin-bottom:24px;}
+  .kurs-strip .lbl{font-size:13px;color:var(--brand-strong);font-weight:600;}
+  .kurs-field{display:flex;align-items:center;gap:6px;}
+  .kurs-field .pre{font-size:13px;color:var(--brand-bright);font-weight:600;}
+  .kurs-field input{width:130px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;border:1px solid var(--brand-line-strong);background:#fff;border-radius:8px;padding:7px 10px;color:var(--ink);}
+  .kurs-field input:focus{outline:none;border-color:var(--brand-bright);box-shadow:0 0 0 3px rgba(31,111,224,.18);}
+  .kurs-meta{font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:8px;margin-left:auto;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--brand-bright);flex:none;}
+  .dot.manual{background:#c98a12;}
+
+  .sect{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.03);margin-bottom:16px;}
+  .section-bar{display:flex;align-items:center;gap:10px;padding:13px 22px;background:var(--brand);color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+  .section-bar .sq{width:8px;height:8px;border-radius:2px;background:#fff;opacity:.9;flex:none;}
+  .section-bar .note{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500;font-size:11.5px;opacity:.85;}
+
+  .row{display:grid;grid-template-columns:minmax(150px,1.4fr) 210px 34px 210px;gap:14px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:none;}
+  .cell-detail{font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+  .itxt{font-weight:600;}
+
+  /* PPN toggle per item */
+  .ppn-tgl{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--muted);font:inherit;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px 3px 7px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+  .ppn-tgl::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.45;}
+  .ppn-tgl:hover{border-color:var(--brand);color:var(--brand);}
+  .ppn-tgl.on{background:var(--brand);border-color:var(--brand);color:#fff;}
+  .ppn-tgl.on::before{opacity:1;}
+
+  /* kardus radio */
+  .pick{display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
+  .pick input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:2px solid var(--line-strong);border-radius:50%;margin:0;cursor:pointer;position:relative;flex:none;transition:border-color .15s;}
+  .pick input:checked{border-color:var(--brand);}
+  .pick input:checked::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--brand);}
+
+  .cell-input{text-align:right;}
+  .field{width:100%;max-width:190px;margin-left:auto;display:block;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;text-align:right;border:1px solid var(--brand-line-strong);background:var(--brand-soft-2);border-radius:10px;padding:10px 12px;color:var(--ink);transition:border-color .15s,box-shadow .15s,background .15s;}
+  .field:focus{outline:none;border-color:var(--brand-bright);background:#fff;box-shadow:0 0 0 3px rgba(31,111,224,.18);}
+  .field::placeholder{color:var(--muted);font-weight:400;}
+  .field.auto{background:#eef1f4;border-style:dashed;color:var(--ink-soft);cursor:not-allowed;}
+  .cap{font-size:11px;color:var(--muted);margin-top:4px;text-align:right;}
+  .cap-ppn.active{color:var(--brand);}
+  .cap-ppn b{font-weight:700;}
+
+  /* % input */
+  .pct{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
+  .pct .field{max-width:96px;}
+  .pct .sfx{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--brand);}
+
+  .cell-arrow{color:var(--brand-line-strong);font-size:16px;text-align:center;line-height:1;user-select:none;}
+  .row.pure .cell-arrow{opacity:0;}
+
+  .cell-out{text-align:right;}
+  .out{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-weight:700;font-size:15.5px;color:var(--ink);white-space:nowrap;}
+  .out .cur{color:var(--brand-bright);font-weight:600;font-size:12.5px;margin-right:3px;}
+  .out.plain .cur{display:none;}
+
+  .row.sum{background:var(--brand-soft);border-top:1px solid var(--brand-line);padding-top:16px;padding-bottom:16px;}
+  .row.sum .cell-detail{font-weight:700;color:var(--brand-strong);}
+  .row.sum .out{color:var(--brand);font-size:17px;}
+  .row.sum .out .cur{color:var(--brand);}
+  .row.hl{background:var(--brand-soft);}
+  .row.off{opacity:.45;}
+
+  /* baris item Section 2: Harga Awal -> Setelah PPN -> Rp/Pcs */
+  .item-row{grid-template-columns:minmax(140px,1.25fr) 168px 22px 160px 22px 168px;}
+  .item-row .cell-detail{flex-direction:column;align-items:flex-start;gap:9px;}
+  .cell-mid{text-align:right;}
+  .out.mid{font-size:14px;font-weight:600;color:var(--ink-soft);}
+  .out.mid.active{color:var(--brand);}
+  .out.mid:not(.active){color:var(--muted);font-weight:500;font-size:13px;}
+  .out.mid .cur{font-weight:600;font-size:11.5px;opacity:.7;margin-right:2px;}
+
+  .final{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  .final.one{grid-template-columns:1fr;}
+  .final-card{border-radius:18px;padding:22px 24px;position:relative;overflow:hidden;}
+  .final-card.roll{background:#fff;border:1.5px solid var(--brand-line-strong);}
+  .final-card.kg{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-strong) 100%);color:#fff;}
+  .final-card.kg::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.06);}
+  .fc-lbl{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--ink-soft);margin:0 0 10px;text-transform:uppercase;}
+  .final-card.kg .fc-lbl{color:rgba(255,255,255,.82);}
+  .fc-val{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-weight:700;font-size:32px;line-height:1;letter-spacing:-.01em;position:relative;}
+  .final-card.roll .fc-val{color:var(--brand);}
+  .fc-val .cur{font-size:16px;font-weight:600;margin-right:5px;opacity:.7;}
+  .fc-unit{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
+  .final-card.kg .fc-unit{color:rgba(255,255,255,.85);}
+
+  /* Section 2 head + toggles */
+  .s2{margin-top:44px;}
+  .s2-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px;flex-wrap:wrap;}
+  .s2-tag{font-size:12px;letter-spacing:.14em;color:var(--brand);font-weight:700;margin:0 0 6px;}
+  .s2-title{font-size:23px;font-weight:800;margin:0;letter-spacing:-.01em;}
+  .s2-note{margin:6px 0 0;font-size:13px;color:var(--ink-soft);max-width:46ch;}
+  .tgl-wrap{display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
+  .toggles{display:flex;gap:12px;flex-wrap:wrap;}
+  .tgl{display:flex;flex-direction:column;gap:6px;}
+  .tgl > span{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--brand-strong);text-align:center;}
+  .sel{position:relative;}
+  .sel select{appearance:none;-webkit-appearance:none;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--ink);background:var(--brand-soft-2);border:1.5px solid var(--brand-line-strong);border-radius:10px;padding:11px 40px 11px 14px;cursor:pointer;min-width:132px;width:100%;transition:border-color .15s,box-shadow .15s;}
+  .sel select:focus{outline:none;border-color:var(--brand-bright);box-shadow:0 0 0 3px rgba(8,145,178,.2);}
+  .sel::after{content:"";position:absolute;right:15px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--brand);pointer-events:none;}
+  .bb-readout{font-size:12.5px;color:var(--brand-strong);background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:9px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-weight:600;}
+  .bb-readout b{color:var(--brand);font-weight:700;}
+
+  @media (max-width:719px){
+    .wrap{padding:20px 14px 60px;}
+    h1{font-size:22px;} .s2-title{font-size:20px;}
+    .kurs-meta{margin-left:0;width:100%;}
+    .section-bar .note{display:none;}
+    .row{grid-template-columns:1fr auto 1fr;gap:8px 10px;padding:15px 16px;}
+    .section-bar{padding:12px 16px;}
+    .cell-detail{grid-column:1 / -1;font-weight:600;font-size:14.5px;margin-bottom:5px;}
+    .field{max-width:100%;} .cap{text-align:left;}
+    .pct{justify-content:flex-start;}
+    .row.pure{grid-template-columns:1fr;}
+    .row.pure .cell-arrow{display:none;}
+    .row.pure .cell-out{grid-column:1 / -1;}
+    /* item Section 2 di mobile: detail & input full, lalu Setelah PPN + Rp/Pcs berlabel */
+    .item-row{grid-template-columns:1fr 1fr;gap:8px 12px;}
+    .item-row .cell-detail{grid-column:1 / -1;}
+    .item-row .cell-input{grid-column:1 / -1;}
+    .item-row .cell-arrow{display:none;}
+    .item-row .cell-mid,.item-row .cell-out{text-align:left;position:relative;padding-top:16px;}
+    .item-row .cell-mid::before{content:"Setelah PPN";}
+    .item-row .cell-mid.noppn::before{display:none;}
+    .item-row .cell-mid.noppn{padding-top:0;}
+    .item-row .cell-out::before{content:"Rupiah / Pcs";}
+    .item-row .cell-mid::before,.item-row .cell-out::before{position:absolute;top:0;left:0;font-size:10px;letter-spacing:.04em;color:var(--muted);font-weight:700;text-transform:uppercase;}
+    .item-row .cell-out{text-align:right;}
+    .item-row .cell-out::before{left:auto;right:0;}
+    .item-row.sum{grid-template-columns:1fr;}
+    .item-row.sum .cell-input,.item-row.sum .cell-arrow,.item-row.sum .cell-mid{display:none;}
+    .item-row.sum .cell-out{grid-column:1 / -1;text-align:right;padding-top:0;}
+    .item-row.sum .cell-out::before{display:none;}
+    .final{grid-template-columns:1fr;}
+    .fc-val{font-size:28px;}
+    .tgl-wrap{width:100%;align-items:stretch;}
+    .toggles{width:100%;} .tgl{flex:1;} .sel select{min-width:0;}
+    .bb-readout{text-align:center;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+
+  /* ============ POLISH MOBILE (HP) ============ */
+  .mobile-total{display:none;}
+  @media (max-width:719px){
+    .wrap{padding:18px 14px 104px;}                 /* ruang utk sticky bar */
+    /* cegah auto-zoom iOS (font >=16px) + tap target lega */
+    .field,.kurs-field input,.sel select{font-size:16px;}
+    .field{padding:13px 14px;border-radius:12px;}
+    .btn{padding:11px 16px;font-size:14px;}
+    .sel select{padding:13px 42px 13px 15px;border-radius:12px;}
+    .ppn-tgl{padding:6px 12px;font-size:11px;}
+    .pick input{width:20px;height:20px;}
+    header.top{gap:12px;margin-bottom:16px;}
+    .sub{font-size:13.5px;}
+    /* kurs jadi blok full-width rapi */
+    .kurs-strip{gap:12px;padding:14px;}
+    .kurs-strip .lbl{width:100%;font-size:12px;}
+    .kurs-field{width:100%;} .kurs-field input{flex:1;width:auto;}
+    .kurs-strip .btn{width:100%;justify-content:center;}
+    /* kartu & baris lebih lega */
+    .sect{border-radius:16px;margin-bottom:14px;}
+    .row{padding:16px;}
+    .section-bar{padding:14px 16px;font-size:12px;}
+    /* item Sec 2: hasil per-pcs ditonjolin, setelah-ppn sekunder */
+    .item-row .cell-out .out{font-size:17px;}
+    .item-row .cell-mid .out{font-size:13.5px;}
+    .item-row .cell-mid,.item-row .cell-out{padding-top:18px;}
+    .bb-readout{font-size:13px;padding:10px 12px;}
+    .final-card{padding:20px;}
+    .fc-val{font-size:30px;}
+
+    /* sticky live total di bawah layar */
+    .mobile-total{
+      display:flex;align-items:center;gap:12px;
+      position:fixed;left:0;right:0;bottom:0;z-index:60;
+      background:linear-gradient(135deg,#0e7490 0%,#155e75 100%);color:#fff;
+      padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));
+      box-shadow:0 -6px 22px rgba(8,47,73,.22);
+    }
+    .mt-left{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+    .mt-lbl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .mt-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:19px;white-space:nowrap;}
+    .mt-val .cur{font-size:13px;opacity:.75;margin-right:3px;}
+    .mt-btn{appearance:none;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.16);color:#fff;font:inherit;font-weight:700;font-size:12.5px;padding:10px 15px;border-radius:11px;cursor:pointer;white-space:nowrap;flex:none;}
+    .mt-btn:active{transform:translateY(1px);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <p class="brand-tag">CV. MUTIARA PLASTIKINDO</p>
+      <h1>Biaya Import Jumbo Lakban</h1>
+      <p class="sub">Isi kolom input, hasil dihitung otomatis.</p>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btnReset" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset
+      </button>
+    </div>
+  </header>
+
+  <div class="kurs-strip">
+    <span class="lbl">Kurs USD → IDR</span>
+    <div class="kurs-field">
+      <span class="pre">Rp</span>
+      <input class="num" id="inp-kurs" inputmode="numeric" autocomplete="off" aria-label="Kurs USD ke IDR">
+    </div>
+    <button class="btn" id="btnKurs" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+      Update kurs
+    </button>
+    <span class="kurs-meta"><span class="dot" id="kursDot"></span><span id="kursStatus">Memuat kurs…</span></span>
+  </div>
+
+  <!-- ============ SECTION 1 ============ -->
+  <div class="sect">
+    <div class="section-bar"><span class="sq"></span>Harga Barang</div>
+    <div class="row">
+      <div class="cell-detail">Harga Barang</div>
+      <div class="cell-input"><input class="field num" id="inp-hargaBarang" data-type="dec" inputmode="decimal" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out" id="out-echoHargaBarang"></span></div>
+    </div>
+    <div class="row">
+      <div class="cell-detail">Ukuran 40 Ft</div>
+      <div class="cell-input"><input class="field num" id="inp-ukuran" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out" id="out-nilaiBarang"></span></div>
+    </div>
+    <div class="row pure sum">
+      <div class="cell-detail">Total Harga Barang</div>
+      <div class="cell-input"></div><div class="cell-arrow"></div>
+      <div class="cell-out"><span class="out" id="out-totalHargaBarang"></span></div>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="section-bar"><span class="sq"></span>Biaya PIB</div>
+    <div class="row pure"><div class="cell-detail">PPN 11%</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-ppn"></span></div></div>
+    <div class="row pure"><div class="cell-detail">PPH 2,5%</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-pph"></span></div></div>
+    <div class="row pure sum"><div class="cell-detail">Total Biaya PIB</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-totalPIB"></span></div></div>
+  </div>
+
+  <div class="sect">
+    <div class="section-bar"><span class="sq"></span>Estimasi Local Charge</div>
+    <div class="row">
+      <div class="cell-detail">Biaya DO</div>
+      <div class="cell-input"><input class="field num" id="inp-biayaDO" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out" id="out-echoBiayaDO"></span></div>
+    </div>
+    <div class="row">
+      <div class="cell-detail">Biaya Lift On – Lift Off</div>
+      <div class="cell-input"><input class="field num" id="inp-liftOnOff" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out" id="out-echoLiftOnOff"></span></div>
+    </div>
+    <div class="row pure sum"><div class="cell-detail">Total Biaya LC</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-totalLC"></span></div></div>
+  </div>
+
+  <div class="sect">
+    <div class="section-bar"><span class="sq"></span>Biaya Pengiriman</div>
+    <div class="row pure"><div class="cell-detail">Biaya PIB</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-pengPIB"></span></div></div>
+    <div class="row pure"><div class="cell-detail">Estimasi Local Charge</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-pengLC"></span></div></div>
+    <div class="row">
+      <div class="cell-detail">Invoice LS Anindya</div>
+      <div class="cell-input"><input class="field num" id="inp-invoiceLS" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out" id="out-echoInvoiceLS"></span></div>
+    </div>
+    <div class="row pure sum"><div class="cell-detail">Total Biaya Pengiriman</div><div class="cell-input"></div><div class="cell-arrow"></div><div class="cell-out"><span class="out" id="out-totalPengiriman"></span></div></div>
+  </div>
+
+  <div class="sect">
+    <div class="section-bar"><span class="sq"></span>Pembagi Harga</div>
+    <div class="row">
+      <div class="cell-detail">Jumlah Roll per Kontainer</div>
+      <div class="cell-input"><input class="field num" id="inp-rollPerKontainer" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out plain" id="out-echoRoll"></span></div>
+    </div>
+    <div class="row">
+      <div class="cell-detail">Kg per Roll</div>
+      <div class="cell-input"><input class="field num" id="inp-kgPerRoll" data-type="int" inputmode="numeric" autocomplete="off"></div>
+      <div class="cell-arrow">→</div>
+      <div class="cell-out"><span class="out plain" id="out-echoKg"></span></div>
+    </div>
+  </div>
+
+  <div class="final">
+    <div class="final-card roll">
+      <p class="fc-lbl">Harga / Roll</p>
+      <div class="fc-val"><span class="cur">Rp</span><span id="out-hargaRoll">0</span></div>
+      <p class="fc-unit"></p>
+    </div>
+    <div class="final-card kg">
+      <p class="fc-lbl">Harga / Kg</p>
+      <div class="fc-val"><span class="cur">Rp</span><span id="out-hargaKg">0</span></div>
+      <p class="fc-unit"></p>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2 ============ -->
+  <div class="s2">
+    <div class="s2-head">
+      <div>
+        <p class="s2-tag">SECTION 2</p>
+        <h2 class="s2-title">Harga Modal Bahan Baku</h2>
+        <p class="s2-note">Input = Harga Sebelum PPN · Klik tombol <b>PPN 11%</b> untuk penambahan PPN 11% · Hasil = Rupiah / Pcs</p>
+      </div>
+      <div class="tgl-wrap">
+        <div class="toggles">
+          <label class="tgl"><span>Ukuran Lakban (Meter)</span>
+            <div class="sel"><select id="sel-meter" class="num"></select></div>
+          </label>
+          <label class="tgl"><span>Ukuran Core</span>
+            <div class="sel">
+              <select id="sel-core" class="num">
+                <option value="2">2 mm</option>
+                <option value="2.8" selected>2.8 mm</option>
+                <option value="3">3 mm</option>
+              </select>
+            </div>
+          </label>
+        </div>
+        <div class="bb-readout">Berat Bersih (Daging Lakban): <b id="out-bb">0</b> gram</div>
+      </div>
+    </div>
+
+    <!-- item modal -->
+    <div class="sect">
+      <div class="section-bar"><span class="sq"></span>Harga Modal Bahan Baku<span class="note">Harga Awal → Setelah PPN → Rp / Pcs</span></div>
+
+      <div class="row item-row">
+        <div class="cell-detail"><span class="itxt">Paper Core / Pcs</span><button class="ppn-tgl" data-ppn="paperCore" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-paperCore" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-paperCore"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-paperCore"></span></div>
+      </div>
+
+      <div class="row item-row">
+        <div class="cell-detail"><span class="itxt">Label Core / 5.500 Pcs</span><button class="ppn-tgl" data-ppn="labelCore" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-labelCore" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-labelCore"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-labelCore"></span></div>
+      </div>
+
+      <div class="row item-row">
+        <div class="cell-detail"><span class="itxt">Label Panah / Kg</span><button class="ppn-tgl" data-ppn="labelPanah" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-labelPanah" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-labelPanah"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-labelPanah"></span></div>
+      </div>
+
+      <div class="row item-row">
+        <div class="cell-detail"><span class="itxt">Plastik Shrink / Kg</span><button class="ppn-tgl" data-ppn="plastikShrink" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-plastikShrink" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-plastikShrink"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-plastikShrink"></span></div>
+      </div>
+
+      <div class="row item-row hl">
+        <div class="cell-detail"><span class="itxt">Jumbo Lakban / Kg</span><button class="ppn-tgl" data-ppn="jumbo" type="button">PPN 11%</button></div>
+        <div class="cell-input">
+          <input class="field num auto" id="inp-jumbo" readonly tabindex="-1" aria-label="Harga Jumbo Lakban (otomatis dari Section 1)">
+          <div class="cap">Otomatis dari Harga / Kg</div>
+        </div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-jumbo"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-jumbo"></span><div class="cap"></div></div>
+      </div>
+
+      <div class="row item-row" id="row-kardus45">
+        <div class="cell-detail"><label class="pick"><input type="radio" name="kardusPick" value="45"><span class="itxt">Kardus 45 mm / Pcs</span></label><button class="ppn-tgl" data-ppn="kardus45" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-kardus45" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-kardus45"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-kardus45"></span><div class="cap" id="cap-kardus45"></div></div>
+      </div>
+
+      <div class="row item-row" id="row-kardus48">
+        <div class="cell-detail"><label class="pick"><input type="radio" name="kardusPick" value="48"><span class="itxt">Kardus 48 mm / Pcs</span></label><button class="ppn-tgl" data-ppn="kardus48" type="button">PPN 11%</button></div>
+        <div class="cell-input"><input class="field num" id="inp-kardus48" data-type="int" inputmode="numeric" autocomplete="off"></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-mid"><span class="out mid" id="setppn-kardus48"></span></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-kardus48"></span><div class="cap" id="cap-kardus48"></div></div>
+      </div>
+
+      <div class="row item-row sum">
+        <div class="cell-detail">Total Modal Bahan Baku</div>
+        <div class="cell-input"></div><div class="cell-arrow"></div>
+        <div class="cell-mid"></div><div class="cell-arrow"></div>
+        <div class="cell-out"><span class="out" id="out2-totalModal"></span></div>
+      </div>
+    </div>
+
+    <!-- biaya produksi -->
+    <div class="sect">
+      <div class="section-bar"><span class="sq"></span>Biaya Produksi<span class="note">Dari Total Modal</span></div>
+
+      <div class="row">
+        <div class="cell-detail">Waste</div>
+        <div class="cell-input"><div class="pct"><input class="field num" id="inp-wastePct" data-type="dec" inputmode="decimal" autocomplete="off"><span class="sfx">%</span></div></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-waste"></span></div>
+      </div>
+
+      <div class="row">
+        <div class="cell-detail">Biaya Operational</div>
+        <div class="cell-input"><div class="pct"><input class="field num" id="inp-operPct" data-type="dec" inputmode="decimal" autocomplete="off"><span class="sfx">%</span></div></div>
+        <div class="cell-arrow">→</div>
+        <div class="cell-out"><span class="out" id="out2-oper"></span></div>
+      </div>
+    </div>
+
+    <div class="final one" id="produksiCard">
+      <div class="final-card kg">
+        <p class="fc-lbl">Total Biaya Produksi</p>
+        <div class="fc-val"><span class="cur">Rp</span><span id="out2-produksi">0</span></div>
+        <p class="fc-unit"></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   BIAYA IMPORT JUMBO LAKBAN — CV. MUTIARA PLASTIKINDO
+   Sec 1: biaya import -> Harga/Kg
+   Sec 2: harga modal bahan baku -> Total Biaya Produksi
+   Semua tabel & rumus di backend/JS. User hanya isi input & toggle.
+   ========================================================= */
+
+const DEFAULTS = {
+  // Section 1
+  hargaBarang:1.526, ukuran:28125, kurs:17700,
+  biayaDO:5812650, liftOnOff:2199798, invoiceLS:7000000,
+  rollPerKontainer:125, kgPerRoll:225,
+  // Section 2 (Harga Sebelum PPN)
+  paperCore:5050, labelCore:5061600, labelPanah:40000,
+  plastikShrink:31000, kardus45:4375, kardus48:4550,
+  // Section 2 toggles
+  meter:65, core:'2.8', kardusPick:'45',
+  wastePct:3, operPct:7,
+  // PPN aktif per item (default sesuai sheet)
+  ppn:{ paperCore:false, labelCore:false, labelPanah:false, plastikShrink:false, jumbo:false, kardus45:true, kardus48:true }
+};
+const state = { ...DEFAULTS, ppn:{ ...DEFAULTS.ppn } };
+let kursMode = 'manual';
+
+// tabel backend
+const CORE_WEIGHT = { '2':17, '2.8':22, '3':23 };   // gram (Tabel Ukuran Core)
+const LABEL_PANAH_G = 0.07;                          // gram
+const beratBersih = (meter, core) => (2*meter + 18) - (CORE_WEIGHT[core] || 22) - LABEL_PANAH_G;
+const ppnMul = on => on ? 1.11 : 1;
+
+// format
+const fmtInt = n => Math.round(n).toLocaleString('id-ID');
+const fmtRp  = n => Math.round(n).toLocaleString('id-ID');
+const fmtRp2 = n => n.toLocaleString('id-ID', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtUSD = n => n.toLocaleString('id-ID', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtUSD3= n => n.toLocaleString('id-ID', {minimumFractionDigits:0, maximumFractionDigits:3});
+const fmtDec = n => (Math.round(n*1000)/1000).toString();
+
+// parse
+const parseIntId = s => parseInt(String(s).replace(/[^\d]/g,''),10) || 0;
+function parseDecId(s){
+  s = String(s).replace(/[^\d.,]/g,'').replace(/,/g,'.');
+  const p = s.split('.'); if (p.length>2) s = p[0]+'.'+p.slice(1).join('');
+  return parseFloat(s) || 0;
+}
+
+// input binding
+const inputs = [
+  { id:'inp-hargaBarang', key:'hargaBarang', type:'dec' },
+  { id:'inp-ukuran',      key:'ukuran',      type:'int' },
+  { id:'inp-biayaDO',     key:'biayaDO',     type:'int' },
+  { id:'inp-liftOnOff',   key:'liftOnOff',   type:'int' },
+  { id:'inp-invoiceLS',   key:'invoiceLS',   type:'int' },
+  { id:'inp-rollPerKontainer', key:'rollPerKontainer', type:'int' },
+  { id:'inp-kgPerRoll',   key:'kgPerRoll',   type:'int' },
+  { id:'inp-paperCore',     key:'paperCore',     type:'int' },
+  { id:'inp-labelCore',     key:'labelCore',     type:'int' },
+  { id:'inp-labelPanah',    key:'labelPanah',    type:'int' },
+  { id:'inp-plastikShrink', key:'plastikShrink', type:'int' },
+  { id:'inp-kardus45',      key:'kardus45',      type:'int' },
+  { id:'inp-kardus48',      key:'kardus48',      type:'int' },
+  { id:'inp-wastePct',      key:'wastePct',      type:'dec' },
+  { id:'inp-operPct',       key:'operPct',       type:'dec' },
+];
+const displayValue = c => c.type==='dec' ? fmtDec(state[c.key]) : fmtInt(state[c.key]);
+
+inputs.forEach(c => {
+  const el = document.getElementById(c.id);
+  el.value = displayValue(c);
+  el.addEventListener('input', () => { state[c.key] = c.type==='dec' ? parseDecId(el.value) : parseIntId(el.value); recompute(); });
+  el.addEventListener('focus', () => { el.value = String(state[c.key] || ''); el.select(); });
+  el.addEventListener('blur',  () => { el.value = displayValue(c); });
+});
+
+// toggles: meter & core
+const selMeter = document.getElementById('sel-meter');
+for (let m=50; m<=100; m++){
+  const o = document.createElement('option'); o.value=m; o.textContent=m;
+  if (m===DEFAULTS.meter) o.selected=true;
+  selMeter.appendChild(o);
+}
+selMeter.addEventListener('change', e => { state.meter = parseInt(e.target.value,10) || 65; recompute(); });
+const selCore = document.getElementById('sel-core');
+selCore.addEventListener('change', e => { state.core = e.target.value; recompute(); });
+
+// PPN toggle per item
+document.querySelectorAll('.ppn-tgl').forEach(btn => {
+  const key = btn.dataset.ppn;
+  btn.classList.toggle('on', !!state.ppn[key]);
+  btn.addEventListener('click', () => {
+    state.ppn[key] = !state.ppn[key];
+    btn.classList.toggle('on', state.ppn[key]);
+    recompute();
+  });
+});
+
+// kardus picker
+document.querySelectorAll('input[name="kardusPick"]').forEach(r => {
+  r.checked = (r.value === state.kardusPick);
+  r.addEventListener('change', () => { if (r.checked){ state.kardusPick = r.value; recompute(); } });
+});
+
+// kurs
+const kursEl = document.getElementById('inp-kurs');
+kursEl.value = fmtInt(state.kurs);
+kursEl.addEventListener('input', () => { state.kurs = parseIntId(kursEl.value); kursMode='manual'; setKursStatus(); recompute(); });
+kursEl.addEventListener('focus', () => { kursEl.value = String(state.kurs || ''); kursEl.select(); });
+kursEl.addEventListener('blur',  () => { kursEl.value = fmtInt(state.kurs); });
+
+function setKursStatus(msg){
+  const dot = document.getElementById('kursDot'), st = document.getElementById('kursStatus');
+  if (msg){ st.textContent = msg; return; }
+  if (kursMode==='auto'){ dot.classList.remove('manual'); st.textContent = 'Otomatis · ' + new Date().toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}); }
+  else { dot.classList.add('manual'); st.textContent = 'Manual (ketik sendiri)'; }
+}
+const KURS_SOURCES = [
+  { url:'https://open.er-api.com/v6/latest/USD',                                                  pick:j=>j&&j.rates&&j.rates.IDR },
+  { url:'https://api.frankfurter.app/latest?from=USD&to=IDR',                                      pick:j=>j&&j.rates&&j.rates.IDR },
+  { url:'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',    pick:j=>j&&j.usd&&j.usd.idr },
+];
+async function fetchKurs(){
+  setKursStatus('Memuat kurs…');
+  for (const src of KURS_SOURCES){
+    try{
+      const r = await fetch(src.url, {cache:'no-store'});
+      if (!r.ok) continue;
+      const j = await r.json();
+      const idr = src.pick(j);
+      if (idr){
+        state.kurs = Math.round(idr); kursMode='auto';
+        kursEl.value = fmtInt(state.kurs); setKursStatus(); recompute();
+        return;
+      }
+    }catch(e){ /* sumber ini gagal, coba berikutnya */ }
+  }
+  // semua sumber gagal (mis. diblokir di preview / semua API down) -> manual
+  kursMode='manual'; setKursStatus('Auto tidak tersedia · isi kurs manual'); recompute();
+}
+
+// perhitungan inti
+function recompute(){
+  const s = state;
+
+  // ===== SECTION 1 =====
+  const nilaiBarang      = s.hargaBarang * s.ukuran;
+  const totalHargaBarang = s.kurs * nilaiBarang;
+  const ppn      = totalHargaBarang * 0.11;
+  const pph      = (totalHargaBarang + ppn) * 0.025;
+  const totalPIB = ppn + pph;
+  const totalLC  = s.biayaDO + s.liftOnOff;
+  const totalPengiriman = totalPIB + totalLC + s.invoiceLS;
+  const roll = s.rollPerKontainer || 1, kg = s.kgPerRoll || 1;
+  const hargaRoll = (totalHargaBarang + totalPengiriman) / roll;
+  const hargaKg   = hargaRoll / kg;
+
+  setOut('out-echoHargaBarang', fmtUSD3(s.hargaBarang), '$');
+  setOut('out-echoBiayaDO', fmtRp(s.biayaDO), 'Rp');
+  setOut('out-echoLiftOnOff', fmtRp(s.liftOnOff), 'Rp');
+  setOut('out-echoInvoiceLS', fmtRp(s.invoiceLS), 'Rp');
+  setOut('out-echoRoll', fmtInt(s.rollPerKontainer));
+  setOut('out-echoKg', fmtInt(s.kgPerRoll));
+  setOut('out-nilaiBarang', fmtUSD(nilaiBarang), '$');
+  setOut('out-totalHargaBarang', fmtRp(totalHargaBarang), 'Rp');
+  setOut('out-ppn', fmtRp(ppn), 'Rp');
+  setOut('out-pph', fmtRp(pph), 'Rp');
+  setOut('out-totalPIB', fmtRp(totalPIB), 'Rp');
+  setOut('out-totalLC', fmtRp(totalLC), 'Rp');
+  setOut('out-pengPIB', fmtRp(totalPIB), 'Rp');
+  setOut('out-pengLC', fmtRp(totalLC), 'Rp');
+  setOut('out-totalPengiriman', fmtRp(totalPengiriman), 'Rp');
+  document.getElementById('out-hargaRoll').textContent = fmtRp(hargaRoll);
+  document.getElementById('out-hargaKg').textContent   = fmtRp(hargaKg);
+
+  // ===== SECTION 2 =====  (Rupiah / Pcs)
+  const bb = beratBersih(s.meter, s.core);
+  const perGram = x => x / 1000;
+
+  const rPaper   = (s.paperCore     * ppnMul(s.ppn.paperCore)) / 28;
+  const rLabelC  = (s.labelCore     * ppnMul(s.ppn.labelCore)) / 5500 / 28;
+  const rLabelP  = perGram(s.labelPanah    * ppnMul(s.ppn.labelPanah))    * 0.0714;
+  const rPlastik = perGram(s.plastikShrink * ppnMul(s.ppn.plastikShrink)) * 0.5833;
+  const rJumbo   = perGram(hargaKg  * ppnMul(s.ppn.jumbo)) * bb;
+  const rKardus45= (s.kardus45      * ppnMul(s.ppn.kardus45)) / 72;
+  const rKardus48= (s.kardus48      * ppnMul(s.ppn.kardus48)) / 72;
+
+  document.getElementById('out-bb').textContent = fmtRp2(bb);
+  setOut2('out2-paperCore', rPaper);
+  setOut2('out2-labelCore', rLabelC);
+  setOut2('out2-labelPanah', rLabelP);
+  setOut2('out2-plastikShrink', rPlastik);
+  setOut2('out2-jumbo', rJumbo);
+  setOut2('out2-kardus45', rKardus45);
+  setOut2('out2-kardus48', rKardus48);
+  const jf = document.getElementById('inp-jumbo'); if (jf) jf.value = fmtInt(hargaKg);
+
+  // caption "Harga Setelah PPN" per item
+  setPPNcap('setppn-paperCore',     s.paperCore,     s.ppn.paperCore);
+  setPPNcap('setppn-labelCore',     s.labelCore,     s.ppn.labelCore);
+  setPPNcap('setppn-labelPanah',    s.labelPanah,    s.ppn.labelPanah);
+  setPPNcap('setppn-plastikShrink', s.plastikShrink, s.ppn.plastikShrink);
+  setPPNcap('setppn-jumbo',         hargaKg,         s.ppn.jumbo);
+  setPPNcap('setppn-kardus45',      s.kardus45,      s.ppn.kardus45);
+  setPPNcap('setppn-kardus48',      s.kardus48,      s.ppn.kardus48);
+
+  // kardus dipilih -> hanya yang aktif masuk total
+  const use45 = s.kardusPick === '45';
+  document.getElementById('row-kardus45').classList.toggle('off', !use45);
+  document.getElementById('row-kardus48').classList.toggle('off', use45);
+  document.getElementById('cap-kardus45').textContent = use45 ? 'dipakai' : 'tidak dihitung';
+  document.getElementById('cap-kardus48').textContent = use45 ? 'tidak dihitung' : 'dipakai';
+  const rKardus = use45 ? rKardus45 : rKardus48;
+
+  const totalModal = rPaper + rLabelC + rLabelP + rPlastik + rJumbo + rKardus;
+  const waste = totalModal * (s.wastePct/100);
+  const oper  = totalModal * (s.operPct/100);
+  const produksi = totalModal + waste + oper;
+
+  setOut2('out2-totalModal', totalModal);
+  setOut2('out2-waste', waste);
+  setOut2('out2-oper', oper);
+  document.getElementById('out2-produksi').textContent = fmtRp2(produksi);
+  const mtEl = document.getElementById('mt-produksi'); if (mtEl) mtEl.textContent = fmtRp2(produksi);
+}
+function setOut(id, val, cur){
+  const el = document.getElementById(id); if (!el) return;
+  el.innerHTML = (cur ? '<span class="cur">'+cur+'</span>' : '') + val;
+}
+function setOut2(id, val){
+  const el = document.getElementById(id); if (!el) return;
+  el.innerHTML = '<span class="cur">Rp</span>' + fmtRp2(val);
+}
+function setPPNcap(id, base, on){
+  const el = document.getElementById(id); if (!el) return;
+  const mid = el.parentElement; // .cell-mid
+  if (on){
+    el.innerHTML = '<span class="cur">Rp</span>' + fmtInt(base * 1.11);
+    el.classList.add('active');
+    if (mid) mid.classList.remove('noppn');
+  } else {
+    el.textContent = 'Tanpa PPN';
+    el.classList.remove('active');
+    if (mid) mid.classList.add('noppn');
+  }
+}
+
+// kontrol
+document.getElementById('btnKurs').addEventListener('click', fetchKurs);
+const mtBtn = document.getElementById('mtBtn');
+if (mtBtn) mtBtn.addEventListener('click', () => { const t = document.getElementById('produksiCard'); if (t) t.scrollIntoView({behavior:'smooth', block:'center'}); });
+document.getElementById('btnReset').addEventListener('click', () => {
+  Object.assign(state, DEFAULTS); state.ppn = { ...DEFAULTS.ppn };
+  inputs.forEach(c => { document.getElementById(c.id).value = displayValue(c); });
+  kursEl.value = fmtInt(state.kurs); kursMode='manual'; setKursStatus();
+  selMeter.value = String(DEFAULTS.meter); selCore.value = DEFAULTS.core;
+  document.querySelectorAll('.ppn-tgl').forEach(b => b.classList.toggle('on', !!state.ppn[b.dataset.ppn]));
+  document.querySelectorAll('input[name="kardusPick"]').forEach(r => { r.checked = (r.value === state.kardusPick); });
+  recompute();
+});
+
+// init
+setKursStatus(); recompute(); fetchKurs();
+</script>
+<!-- sticky total (tampil di HP) -->
+<div class="mobile-total" id="mobileTotal">
+  <div class="mt-left">
+    <span class="mt-lbl">Total Biaya Produksi · per Pcs</span>
+    <span class="mt-val"><span class="cur">Rp</span><span id="mt-produksi">0</span></span>
+  </div>
+  <button class="mt-btn" id="mtBtn" type="button">Lihat ↓</button>
+</div>
+</body>
+</html>
