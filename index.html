@@ -91,14 +91,14 @@
   .modal img{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;display:block}
   .modal .cap{color:var(--muted);font-size:.82rem;margin:12px 4px;text-align:center;line-height:1.5}
   .modal .mrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  .jpg-controls{margin-bottom:14px}
-  .jpg-controls .fld{margin-bottom:10px}
+  .jpg-controls{margin-bottom:12px}
+  .jpg-controls .fld{margin-bottom:8px}
   .jpg-controls .fld:last-child{margin-bottom:0}
-  .jpg-controls .clbl{display:block;font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.03em}
-  .jpg-controls input{width:100%;border:1.5px solid var(--line-strong);border-radius:8px;padding:8px 10px;font-family:var(--font-sans);font-size:.95rem;color:var(--fg);background:var(--surface-2);font-weight:600}
+  .jpg-controls .clbl{display:block;font-size:.62rem;color:var(--muted);font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+  .jpg-controls input{width:100%;border:1.5px solid var(--line-strong);border-radius:8px;padding:6px 9px;font-family:var(--font-sans);font-size:.78rem;color:var(--fg);background:var(--surface-2);font-weight:600}
   .jpg-controls input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{border:1.5px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 12px;font-family:var(--font-sans);font-weight:700;font-size:.78rem;cursor:pointer;transition:background .15s,color .15s}
+  .chips{display:flex;flex-wrap:nowrap;gap:4px}
+  .chip{flex:1 1 auto;min-width:0;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:4px 6px;font-family:var(--font-sans);font-weight:700;font-size:.66rem;white-space:nowrap;cursor:pointer;transition:background .15s,color .15s}
   .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
   footer{margin-top:22px;text-align:center;color:var(--muted);font-size:.76rem}
@@ -388,9 +388,9 @@
         x.fillStyle = '#e3e9f3'; x.fillRect(0, ry + rowH - 1, W, 1);
       });
 
-      // Footer
+      // Footer (hanya nama/brand)
       x.textAlign = 'center'; x.fillStyle = '#5c6b86'; x.font = '500 12px "Plus Jakarta Sans",sans-serif';
-      x.fillText(brand + '  ·  Kalkulator HPP Bubble Wrap', W/2, H - 18);
+      x.fillText(brand, W/2, H - 18);
 
       lastCanvas = c;
       cb(c.toDataURL('image/jpeg', 0.95));
